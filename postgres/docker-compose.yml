@@ -1,0 +1,30 @@
+version: "3.9"
+
+networks:
+  back:
+    driver: bridge
+
+services:
+  db:
+    container_name: postgres-crud
+    image: 'postgres:13.1-alpine'
+    restart: always
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=database_example
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    volumes:
+      - ./db.sql:/docker-entrypoint-initdb.d/db.sql
+      - data_pg:/data/postgres
+    networks:
+      - back
+volumes:
+  data_pg: null
